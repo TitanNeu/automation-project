@@ -9,7 +9,7 @@
 - 车辆固定在道路近端中央，行驶感由道路中线和横向路纹从远端向近端流动表示。
 - 动画在直线加速、弯道减速、弯中低速、出弯加速之间循环。
 - 随机插入直线减速再加速场景。
-- 车辆模型来自外部 GLB 文件，已打包进 Qt resource。
+- 车辆模型来自外部 GLB 文件，已打包进 Qt resource，并在 OpenGL 中叠加车窗、尾灯、牌照、轮胎阴影和车身高光细节。
 
 ## 项目结构
 
@@ -345,6 +345,15 @@ assets/models/quaternius-white-sedan.glb
 
 OpenGL 渲染层会在运行时从 `qrc:/assets/models/quaternius-white-sedan.glb` 对应的资源路径读取模型数据。
 
+为了在不引入贴图采样器或额外 3D 引擎的情况下提升演示质感，`src/DashboardGlItem.cpp` 会在 GLB 几何车身之上绘制一层原生 OpenGL 细节：
+
+- 深色前/后车窗和侧窗。
+- 后尾灯和轻微发光层。
+- 后牌照、保险杠镀铬线。
+- 轮胎暗部、后视镜和车身高光。
+
+这部分细节使用同一套 2D 投影逻辑，会随弯道场景一起轻微转向，车辆本身仍固定在道路近端中央。
+
 ## 关键文件说明
 
 ### `qml/main.qml`
@@ -364,6 +373,7 @@ OpenGL 渲染层会在运行时从 `qrc:/assets/models/quaternius-white-sedan.gl
 - 透视道路、弯道形变、车道边缘、中线虚线、横向路纹。
 - 读取 GLB 文件中的 mesh、accessor、bufferView、material 数据。
 - 将车辆模型投影到仪表盘道路中央。
+- 在车辆模型上叠加车窗、尾灯、牌照、轮胎阴影和车身高光。
 - 固定车辆屏幕位置，通过道路纹理流动表达行驶速度。
 
 ### `src/main.cpp`
