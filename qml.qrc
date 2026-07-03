@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>assets/models/quaternius-white-sedan.glb</file>
     </qresource>
 </RCC>

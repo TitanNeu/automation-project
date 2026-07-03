@@ -13,11 +13,9 @@ macx {
 
 SOURCES += \
     src/main.cpp \
-    src/DashboardGlItem.cpp \
-    src/VehicleIconItem.cpp
+    src/DashboardGlItem.cpp
 
 HEADERS += \
-    src/DashboardGlItem.h \
-    src/VehicleIconItem.h
+    src/DashboardGlItem.h
 
 RESOURCES += qml.qrc

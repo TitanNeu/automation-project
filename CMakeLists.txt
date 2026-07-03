@@ -21,8 +21,6 @@ add_executable(dashboard-demo
     src/main.cpp
     src/DashboardGlItem.h
     src/DashboardGlItem.cpp
-    src/VehicleIconItem.h
-    src/VehicleIconItem.cpp
     qml.qrc
 )
 

@@ -22,10 +22,6 @@ Window {
     property real sceneTime: 0
     property real sceneDuration: 0
     property string sceneMode: "straightFast"
-    property real carProgress: (distance * 0.008) % 1.0
-    property real carEase: carProgress * carProgress * (3.0 - 2.0 * carProgress)
-    property real carRoadOffset: roadCurve * Math.pow(carEase, 1.55) * roadView.width * 0.19
-    property real carTurnAngle: roadCurve * (10 + carEase * 7)
 
     Component.onCompleted: beginScene("straightFast")
 
@@ -150,20 +146,6 @@ Window {
         speed: root.speed
         distance: root.distance
         curve: root.roadCurve
-    }
-
-    VehicleIcon {
-        id: nativeVehicleIcon
-        width: roadView.width * 0.20
-        height: width * 1.18
-        x: roadView.x + roadView.width * 0.5 + root.carRoadOffset - width * 0.5
-        y: roadView.y + roadView.height * (0.74 - root.carEase * 0.38) - height * 0.5
-        z: roadView.z + 2
-        scale: 1.08 - root.carEase * 0.34
-        rotation: root.carTurnAngle
-        transformOrigin: Item.Center
-        antialiasing: true
-        smooth: true
     }
 
     Canvas {

@@ -6,7 +6,6 @@
 #include <QSurfaceFormat>
 
 #include "DashboardGlItem.h"
-#include "VehicleIconItem.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +22,6 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     qmlRegisterType<DashboardGlItem>("Dashboard", 1, 0, "DashboardRoadView");
-    qmlRegisterType<VehicleIconItem>("Dashboard", 1, 0, "VehicleIcon");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
