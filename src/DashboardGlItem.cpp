@@ -126,8 +126,11 @@ static int componentCount(const QString &type)
 
 static QVector4D materialColor(const QString &name, const QVector4D &fallback)
 {
+    if (name.contains(QLatin1String("LightBlue"), Qt::CaseInsensitive)) {
+        return QVector4D(0.92f, 0.91f, 0.84f, 1.0f);
+    }
     if (name.contains(QLatin1String("Window"), Qt::CaseInsensitive)) {
-        return QVector4D(0.035f, 0.040f, 0.040f, 1.0f);
+        return QVector4D(0.020f, 0.026f, 0.028f, 1.0f);
     }
     if (name.contains(QLatin1String("Black"), Qt::CaseInsensitive)) {
         return QVector4D(0.010f, 0.010f, 0.010f, 1.0f);
@@ -139,11 +142,10 @@ static QVector4D materialColor(const QString &name, const QVector4D &fallback)
         return QVector4D(0.95f, 0.54f, 0.22f, 1.0f);
     }
     if (name.contains(QLatin1String("Tail"), Qt::CaseInsensitive)) {
-        return QVector4D(0.86f, 0.04f, 0.06f, 1.0f);
+        return QVector4D(0.92f, 0.04f, 0.07f, 1.0f);
     }
-    if (name.contains(QLatin1String("LightBlue"), Qt::CaseInsensitive)
-        || name.contains(QLatin1String("Material"), Qt::CaseInsensitive)) {
-        return QVector4D(0.93f, 0.91f, 0.80f, 1.0f);
+    if (name.contains(QLatin1String("Material"), Qt::CaseInsensitive)) {
+        return QVector4D(0.82f, 0.82f, 0.76f, 1.0f);
     }
     return fallback;
 }
@@ -579,6 +581,159 @@ private:
                          centerY - z * scale * 0.56f - correctedY * scale * 0.80f);
     }
 
+    void addVehicleQuad(std::vector<Vertex> &v,
+                        float carX,
+                        float carY,
+                        float scale,
+                        float yaw,
+                        const QVector3D &a,
+                        const QVector3D &b,
+                        const QVector3D &c,
+                        const QVector3D &d,
+                        const QVector4D &color) const
+    {
+        addQuad(v,
+                projectVehiclePoint(a, carX, carY, scale, yaw),
+                projectVehiclePoint(b, carX, carY, scale, yaw),
+                projectVehiclePoint(c, carX, carY, scale, yaw),
+                projectVehiclePoint(d, carX, carY, scale, yaw),
+                color);
+    }
+
+    void addVehicleDetails(std::vector<Vertex> &v, float carX, float carY, float scale, float yaw) const
+    {
+        const QVector4D glass(0.015f, 0.022f, 0.024f, 0.94f);
+        const QVector4D glassGlow(0.70f, 0.86f, 0.82f, 0.18f);
+        const QVector4D bodyShade(0.68f, 0.67f, 0.60f, 0.34f);
+        const QVector4D bodyHighlight(1.0f, 0.98f, 0.86f, 0.42f);
+        const QVector4D red(0.95f, 0.02f, 0.06f, 0.95f);
+        const QVector4D redGlow(1.0f, 0.08f, 0.10f, 0.26f);
+        const QVector4D chrome(0.96f, 0.94f, 0.82f, 0.72f);
+        const QVector4D tire(0.005f, 0.005f, 0.005f, 0.58f);
+        const QVector4D plate(0.88f, 0.82f, 0.58f, 0.82f);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.38f, 1.075f, -0.62f),
+                       QVector3D(0.38f, 1.075f, -0.62f),
+                       QVector3D(0.31f, 1.125f, 0.46f),
+                       QVector3D(-0.31f, 1.125f, 0.46f),
+                       glass);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.31f, 1.128f, -0.42f),
+                       QVector3D(0.31f, 1.128f, -0.42f),
+                       QVector3D(0.24f, 1.140f, 0.36f),
+                       QVector3D(-0.24f, 1.140f, 0.36f),
+                       glassGlow);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.55f, 0.78f, -1.42f),
+                       QVector3D(0.55f, 0.78f, -1.42f),
+                       QVector3D(0.42f, 1.02f, -0.84f),
+                       QVector3D(-0.42f, 1.02f, -0.84f),
+                       glass);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.46f, 0.94f, -1.12f),
+                       QVector3D(0.46f, 0.94f, -1.12f),
+                       QVector3D(0.38f, 0.98f, -0.92f),
+                       QVector3D(-0.38f, 0.98f, -0.92f),
+                       glassGlow);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.72f, 0.35f, -1.43f),
+                       QVector3D(0.72f, 0.35f, -1.43f),
+                       QVector3D(0.60f, 0.56f, -1.18f),
+                       QVector3D(-0.60f, 0.56f, -1.18f),
+                       bodyShade);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.64f, 0.58f, -1.47f),
+                       QVector3D(-0.24f, 0.58f, -1.49f),
+                       QVector3D(-0.20f, 0.68f, -1.39f),
+                       QVector3D(-0.60f, 0.69f, -1.37f),
+                       red);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(0.24f, 0.58f, -1.49f),
+                       QVector3D(0.64f, 0.58f, -1.47f),
+                       QVector3D(0.60f, 0.69f, -1.37f),
+                       QVector3D(0.20f, 0.68f, -1.39f),
+                       red);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.69f, 0.54f, -1.51f),
+                       QVector3D(-0.17f, 0.54f, -1.52f),
+                       QVector3D(-0.14f, 0.72f, -1.35f),
+                       QVector3D(-0.66f, 0.72f, -1.34f),
+                       redGlow);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(0.17f, 0.54f, -1.52f),
+                       QVector3D(0.69f, 0.54f, -1.51f),
+                       QVector3D(0.66f, 0.72f, -1.34f),
+                       QVector3D(0.14f, 0.72f, -1.35f),
+                       redGlow);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.18f, 0.43f, -1.56f),
+                       QVector3D(0.18f, 0.43f, -1.56f),
+                       QVector3D(0.16f, 0.53f, -1.49f),
+                       QVector3D(-0.16f, 0.53f, -1.49f),
+                       plate);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.61f, 0.39f, -1.61f),
+                       QVector3D(0.61f, 0.39f, -1.61f),
+                       QVector3D(0.55f, 0.43f, -1.55f),
+                       QVector3D(-0.55f, 0.43f, -1.55f),
+                       chrome);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.76f, 0.10f, -1.02f),
+                       QVector3D(-0.60f, 0.10f, -1.02f),
+                       QVector3D(-0.58f, 0.42f, -0.82f),
+                       QVector3D(-0.75f, 0.42f, -0.82f),
+                       tire);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(0.60f, 0.10f, -1.02f),
+                       QVector3D(0.76f, 0.10f, -1.02f),
+                       QVector3D(0.75f, 0.42f, -0.82f),
+                       QVector3D(0.58f, 0.42f, -0.82f),
+                       tire);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.74f, 0.13f, 0.91f),
+                       QVector3D(-0.59f, 0.13f, 0.91f),
+                       QVector3D(-0.57f, 0.43f, 1.12f),
+                       QVector3D(-0.73f, 0.43f, 1.12f),
+                       tire);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(0.59f, 0.13f, 0.91f),
+                       QVector3D(0.74f, 0.13f, 0.91f),
+                       QVector3D(0.73f, 0.43f, 1.12f),
+                       QVector3D(0.57f, 0.43f, 1.12f),
+                       tire);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.74f, 0.76f, -0.56f),
+                       QVector3D(-0.60f, 0.76f, -0.54f),
+                       QVector3D(-0.57f, 0.86f, -0.34f),
+                       QVector3D(-0.76f, 0.84f, -0.36f),
+                       glass);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(0.60f, 0.76f, -0.54f),
+                       QVector3D(0.74f, 0.76f, -0.56f),
+                       QVector3D(0.76f, 0.84f, -0.36f),
+                       QVector3D(0.57f, 0.86f, -0.34f),
+                       glass);
+
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.55f, 0.92f, 0.12f),
+                       QVector3D(0.55f, 0.92f, 0.12f),
+                       QVector3D(0.50f, 0.96f, 0.22f),
+                       QVector3D(-0.50f, 0.96f, 0.22f),
+                       bodyHighlight);
+        addVehicleQuad(v, carX, carY, scale, yaw,
+                       QVector3D(-0.57f, 0.55f, -1.16f),
+                       QVector3D(0.57f, 0.55f, -1.16f),
+                       QVector3D(0.56f, 0.58f, -1.10f),
+                       QVector3D(-0.56f, 0.58f, -1.10f),
+                       chrome);
+    }
+
     void addVehicle(std::vector<Vertex> &v)
     {
         if (m_carTriangles.empty()) {
@@ -641,6 +796,8 @@ private:
         for (const DrawTriangle &triangle : projected) {
             addTriangle(v, triangle.a, triangle.b, triangle.c, triangle.color);
         }
+
+        addVehicleDetails(v, carX, carY, scale, yaw);
     }
 
     bool m_initialized = false;

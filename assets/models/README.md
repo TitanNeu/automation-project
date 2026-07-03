@@ -18,6 +18,7 @@ Reason for selection:
 - Low-poly enough for real-time dashboard rendering.
 - Embedded GLB format is convenient for an OpenGL model loader.
 - CC0 licensing is suitable for customer demo usage without attribution requirements.
+- Additional windows, tail lights, license plate, wheel shadow, and body highlight details are drawn by the native OpenGL overlay in `src/DashboardGlItem.cpp`.
 
 Technical notes:
 
